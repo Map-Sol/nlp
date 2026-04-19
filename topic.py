@@ -1,13 +1,27 @@
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import CountVectorizer
 
-m=LogisticRegression().fit([[0],[1]],[0,1])
-s=["AI is powerful","Machine learning improves AI","Football is popular","The match was exciting"]
+model = LogisticRegression().fit([[0.9],[0.2]], [0,1])
 
-t=1;print("TOPIC",t,":");print(s[0])
-prev=1
+def split_topics(text):
+    s = text.split(". ")
+    v = CountVectorizer().fit_transform(s)
 
-for i in range(1,len(s)):
-    o=len(set(s[i-1].split())&set(s[i].split()))>0
-    if prev and not o and m.predict([[1]])[0]:
-        t+=1;print("\nTOPIC",t,":")
-    print(s[i]);prev=o
+    print(s[0])
+    prev_topic = False  
+
+    for i in range(1, len(s)):
+        sim = cosine_similarity(v[i-1], v[i])[0][0]
+        pred = model.predict([[sim]])[0]
+
+        if pred == 1 and not prev_topic:
+            print("\n--- New Topic ---")
+            prev_topic = True
+        else:
+            prev_topic = False
+
+        print(s[i])
+
+text = input("Enter text: ")
+split_topics(text)
