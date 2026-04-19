@@ -5,7 +5,7 @@ from nltk.parse import ChartParser
 grammar = CFG.fromstring("""
 S -> NP VP
 NP -> D N | D N PP | 'ravi' | 'raju'
-VP -> V NP | V NP PP
+VP -> V NP | V NP PP | V PP
 PP -> P NP
 D -> 'the' | 'my'
 P -> 'in' | 'with'
