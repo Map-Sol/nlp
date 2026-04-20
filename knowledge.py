@@ -1,22 +1,15 @@
-import nltk
 from nltk.wsd import lesk
-nltk.download('wordnet')
+from nltk.tokenize import word_tokenize
 from nltk.corpus import wordnet
 
-sentence = input("Enter a sentence: ")
-target_word = input("Enter ambiguous word: ")
+sentence = "I went to the bank to deposit money"
 
+words = word_tokenize(sentence)
+target_word = "bank"
 
-tokens = sentence.replace('.', '').replace(',', '').split()
+sense = lesk(words, target_word)
 
-sense = lesk(tokens, target_word)
-
-print("Sentence:", sentence)
-print("Target Word:", target_word)
-
-if sense:
-    print("Sense:", sense.name())
-    print("Definition:", sense.definition())
-    print("Examples:", sense.examples())
-else:
-    print("No sense found")
+print("Word:", target_word)
+print("Sense:", sense)
+print("Definition:", sense.definition())
+print("Examples:", sense.examples())
